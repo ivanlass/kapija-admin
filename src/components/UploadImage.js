@@ -4,35 +4,47 @@ import Form from './Form';
 import axios from 'axios';
 
 function UploadImage(props) {
-    const [value, setValue] =useState('')
+  const [value, setValue] = useState('')
+  const [link, setLink] = useState('')
 
-console.log(value)
-
-const sendData = e => {
+  const sendData = (e) => {
     e.preventDefault()
-    const formData = new FormData();        
-    formData.append('file', value); // appending file
+    const formData = new FormData();
+    formData.append('banner', value);
+    formData.append('placement', props.placement)
+    formData.append('link', link)
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    };
 
-    axios.post('http://localhost:5000/banners/add', {
-      formData, placement:"top"
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    axios.post('http://localhost:5000/banners/add', formData, config)
+      .then(function (response) {
+        console.log(response);
+        props.setBanners(response.data)
+        setValue("")
+        props.setIsVisible(true)
+        setLink("")
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
-}
+  }
 
   return (
-    <div className="App">
-      <Form 
-      setValue={setValue} 
-      value={value} 
-      sendData={sendData} 
-      label={props.label}  
-      type="file"/>
+    <div className="grey">
+      <Form
+        setValue={setValue}
+        value={value}
+        sendData={sendData}
+        label={props.label}
+        type="file"
+        link={link}
+        setLink={setLink}
+      />
+
     </div>
   );
 }
