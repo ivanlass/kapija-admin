@@ -30,7 +30,7 @@ function BannersList(props) {
 
                         <p>{banner.link}</p>
 
-                        <img width={props.w} src={`http://localhost:5000/${banner.path}`} />
+                        <img width={props.w} src={banner.path.url} />
                         <Button className="btn-banners-delete" onClick={deleteBanner} data-id={banner._id} data-name={banner.path}>DELETE</Button>
                     </div>)
                 }
